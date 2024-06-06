@@ -7,9 +7,11 @@ function autoload($className)
 }
 
 spl_autoload_register("autoload");
-if(isset($_GET['route']))
+if (isset($_GET['route']))
     $route = $_GET['route'];
 else
     $route = '';
+
 $router = new core\Router($route);
 $router->run();
+$router->done();
