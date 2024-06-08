@@ -13,6 +13,7 @@ class Core
     private function __construct()
     {
         $this->template = new Template($this->defaultLayoutPath);
+
     }
     public function run($route)
     {

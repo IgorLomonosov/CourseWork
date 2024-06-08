@@ -12,6 +12,7 @@ if (isset($_GET['route']))
 else
     $route = '';
 
+
 $core = \core\Core::get();
 $core->run($route);
 $core->done();
