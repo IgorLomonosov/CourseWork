@@ -1,9 +1,13 @@
 <?php
 /** @var string $Title */
 /** @var string $Content */
+
+use models\Users;
+
 if(empty($Title))
     $Title = '';
-
+if(empty($Content))
+    $Content = '';
 ?>
 <!doctype html>
 <html lang="en">
@@ -31,15 +35,19 @@ if(empty($Title))
                 </a>
 
                 <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-                    <li><a href="#" class="nav-link px-2 link-secondary">Overview</a></li>
-                    <li><a href="#" class="nav-link px-2 link-body-emphasis">Inventory</a></li>
+                    <li><a href="/" class="nav-link px-2 link-secondary">Головна</a></li>
+                    <li><a href="/news/index" class="nav-link px-2 link-body-emphasis">Новини</a></li>
                     <li><a href="#" class="nav-link px-2 link-body-emphasis">Customers</a></li>
-                    <li><a href="#" class="nav-link px-2 link-body-emphasis">Products</a></li>
+                    <?php if(!Users::IsUserLogged()) : ?>
+                    <li><a href="/users/login" class="nav-link px-2 link-body-emphasis">Увійти</a></li>
+                    <li><a href="/users/register" class="nav-link px-2 link-body-emphasis">Реєстрація</a></li>
+                    <?php endif?>
                 </ul>
 
                 <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" role="search">
                     <input type="search" class="form-control" placeholder="Search..." aria-label="Search">
                 </form>
+                <?php if(Users::IsUserLogged()) : ?>
 
                 <div class="dropdown text-end">
                     <a href="#" class="d-block link-body-emphasis text-decoration-none dropdown-toggle"
@@ -53,9 +61,10 @@ if(empty($Title))
                         <li>
                             <hr class="dropdown-divider">
                         </li>
-                        <li><a class="dropdown-item" href="#">Sign out</a></li>
+                        <li><a class="dropdown-item" href="/users/logout">Logout</a></li>
                     </ul>
                 </div>
+                <?php endif; ?>
             </div>
         </div>
     </header>

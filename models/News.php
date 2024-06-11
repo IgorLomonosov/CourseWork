@@ -14,7 +14,7 @@ use core\Model;
  */
 class News extends Model
 {
-    public $table = 'news';
+    public static $tableName = 'news';
 
     public function __construct()
     {
