@@ -2,6 +2,7 @@
 /** @var string $Title */
 /** @var string $Content */
 
+use core\Core;
 use models\Users;
 
 if(empty($Title))
@@ -17,6 +18,22 @@ if(empty($Content))
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title><?= $Title ?></title>
+    <style>
+        .avatar {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            font-size: 12px;
+            color: white;
+            font-weight: bold;
+        }
+        .dropdown-toggle::after {
+            margin-top: 15px;
+        }
+    </style>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
@@ -47,17 +64,25 @@ if(empty($Content))
                 <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" role="search">
                     <input type="search" class="form-control" placeholder="Search..." aria-label="Search">
                 </form>
-                <?php if(Users::IsUserLogged()) : ?>
+                <?php if(Users::IsUserLogged()) :
+                    $user = Core::get()->session->get('user');
+                    $userInitials = Users::getInitials($user);
+                    ?>
 
                 <div class="dropdown text-end">
-                    <a href="#" class="d-block link-body-emphasis text-decoration-none dropdown-toggle"
+                    <a href="#" class="d-flex link-body-emphasis text-decoration-none dropdown-toggle"
                        data-bs-toggle="dropdown" aria-expanded="false">
-                        <img src="https://github.com/mdo.png" alt="mdo" width="32" height="32" class="rounded-circle">
+                        <div id="avatar-container"></div>
                     </a>
                     <ul class="dropdown-menu text-small">
-                        <li><a class="dropdown-item" href="#">New project...</a></li>
-                        <li><a class="dropdown-item" href="#">Settings</a></li>
-                        <li><a class="dropdown-item" href="#">Profile</a></li>
+                        <?php if($user['role'] === 'admin' || $user['role'] === 'moder') :?>
+                        <li><a class="dropdown-item" href="#">Додати новину</a></li>
+                        <li><a class="dropdown-item" href="#">Перевірити чергу новин</a></li>
+                        <?php endif;
+                        if($user['role'] === 'admin'):?>
+                        <li><a class="dropdown-item" href="#">Переглянути модерацію</a></li>
+                        <?php endif; ?>
+                        <li><a class="dropdown-item" href="#">Видалити акаунт</a></li>
                         <li>
                             <hr class="dropdown-divider">
                         </li>
@@ -84,4 +109,25 @@ if(empty($Content))
     </footer>
 </div>
 </body>
+<script>
+    const userInitials = "<?php echo $userInitials; ?>";
+
+    function getRandomColor() {
+        const letters = '0123456789ABCDEF';
+        let color = '#';
+        for (let i = 0; i < 6; i++) {
+            color += letters[Math.floor(Math.random() * 16)];
+        }
+        return color;
+    }
+
+    function createAvatar(initials) {
+        const avatar = document.getElementById('avatar-container');
+        avatar.className = 'avatar';
+        avatar.style.backgroundColor = getRandomColor();
+        avatar.textContent = initials;
+    }
+
+    createAvatar(userInitials);
+</script>
 </html>

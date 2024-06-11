@@ -5,6 +5,7 @@ namespace core;
 class Router
 {
     protected $route;
+
     public function __construct($route)
     {
         $this->route = $route;
@@ -19,8 +20,8 @@ class Router
         }
         if (count($parts) == 1)
             $parts[1] = 'index';
-        \core\Core::get()->moduleName = $parts[0];
-        \core\Core::get()->actionName = $parts[1];
+        Core::get()->moduleName = $parts[0];
+        Core::get()->actionName = $parts[1];
 
         $controller = 'controllers\\' . ucfirst($parts[0]) . 'Controller';
         $method = 'action' . ucfirst($parts[1]);
@@ -33,11 +34,6 @@ class Router
             } else $this->error(404);
         } else
             $this->error(404);
-        // !!! Return
-    }
-
-    public function done()
-    {
     }
 
     public function error($code)
