@@ -36,6 +36,11 @@ class Router
             $this->error(404);
     }
 
+    public function done()
+    {
+
+    }
+
     public function error($code)
     {
         http_response_code($code);

@@ -16,4 +16,19 @@ class News extends Model
 {
     public static $tableName = 'news';
 
+    public static function getDate($news): string
+    {
+        $dateTime = $news['date'];
+        $dateTime = explode(' ', $dateTime);
+        $date = $dateTime[0];
+        $date = explode('-',$date);
+        $date = array_reverse($date);
+        return implode('.',$date);
+    }
+    public static function getTime($news): string
+    {
+        $dateTime = $news['date'];
+        $dateTime = explode(' ', $dateTime);
+        return $dateTime[1];
+    }
 }

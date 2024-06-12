@@ -1,12 +1,53 @@
 <?php
-$this->Title = 'Список новин';
-?>
 
-<div class="card" style="width: 18rem;">
-    <img src="..." class="card-img-top" alt="...">
-    <div class="card-body">
-        <h5 class="card-title">Card title</h5>
-        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-        <a href="#" class="btn btn-primary">Go somewhere</a>
+use models\News;
+
+$this->Title = 'Список новин';
+/**
+* @var array $newsarray
+ */
+if(empty($newsarray))
+    $newsarray = [];
+$value = 0;
+?>
+<?php if (!empty($error_message)) : ?>
+    <div class="alert alert-danger" role="alert">
+        <?= $error_message ?>
     </div>
-</div>
+<?php endif; ?>
+<style>
+    .card a {
+        display: block;
+        text-decoration: none;
+        color: inherit;
+    }
+    .card a:hover {
+        text-decoration: none;
+    }
+
+</style>
+<?php foreach ($newsarray as $news) {
+    $value++;
+    if($value == 1 ):
+    ?>
+    <div class="card-group">
+        <?php endif; ?>
+        <div class="card">
+            <img src="data:image/png;base64,<?= \models\Images::getImage($news['id'])?>" class="card-img-top" alt="<?= $news['short_text']?>">
+            <div class="card-body">
+                <a href="/news/view/<?= $news['id']?>" style="text-decoration: none; color: inherit;">
+                    <h5 class="card-title"><?= $news['title']?></h5>
+                    <p class="card-text"><?= $news['short_text']?></p>
+                </a>
+            </div>
+            <div class="card-footer">
+                <small class="text-body-secondary"><?= News::getDate($news)?></small>
+            </div>
+        </div>
+        <?php if($value == 3) :?>
+        </div>
+        <br>
+<?php $value=0;
+endif;
+} ?>
+

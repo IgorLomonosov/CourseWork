@@ -19,6 +19,9 @@ if(empty($Content))
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title><?= $Title ?></title>
     <style>
+        .container{
+            font-family: "Comic Sans MS";
+        }
         .avatar {
             display: flex;
             align-items: center;
@@ -29,6 +32,7 @@ if(empty($Content))
             font-size: 12px;
             color: white;
             font-weight: bold;
+            font-family: "Arial";
         }
         .dropdown-toggle::after {
             margin-top: 15px;
@@ -54,7 +58,6 @@ if(empty($Content))
                 <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
                     <li><a href="/" class="nav-link px-2 link-secondary">Головна</a></li>
                     <li><a href="/news/index" class="nav-link px-2 link-body-emphasis">Новини</a></li>
-                    <li><a href="#" class="nav-link px-2 link-body-emphasis">Customers</a></li>
                     <?php if(!Users::IsUserLogged()) : ?>
                     <li><a href="/users/login" class="nav-link px-2 link-body-emphasis">Увійти</a></li>
                     <li><a href="/users/register" class="nav-link px-2 link-body-emphasis">Реєстрація</a></li>
