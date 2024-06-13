@@ -44,6 +44,7 @@ class Router
     public function error($code)
     {
         http_response_code($code);
+        Core::get()->controllerObject->redirect('/errors/404');
         echo $code;
     }
 }

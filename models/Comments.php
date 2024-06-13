@@ -18,6 +18,6 @@ class Comments extends Model
         $comment->news = $news;
         $comment->user = $user;
         $comment->content = $content;
-        $comment->save();
+        $comment->saveInsert();
     }
 }

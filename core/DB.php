@@ -34,32 +34,48 @@ class DB
                 $where_string = '';
         return $where_string;
     }
-    public function select($table, $fields = "*", $where = null)
+
+    public function select($table, $fields = "*", $where = null, $order = null)
     {
-        if (is_array($fields))
+        if (is_array($fields)) {
             $fields_string = implode(', ', $fields);
-        else
-            if (is_string($fields))
+        } else {
+            if (is_string($fields)) {
                 $fields_string = $fields;
-            else
+            } else {
                 $fields_string = "*";
+            }
+        }
+
         $where_string = $this->where($where);
         $sql = "SELECT {$fields_string} FROM {$table} {$where_string}";
-        $sth = $this->pdo->prepare($sql);
 
-        if(!empty($where)){
-            foreach ($where as $key => $value)
-                $sth->bindValue(":{$key}", $value);
+        if (!empty($order)) {
+            if ($order === 'asc') {
+                $sql .= ' ORDER BY date ASC';
+            } elseif ($order === 'desc') {
+                $sql .= ' ORDER BY date DESC';
+            }
         }
+
+        $sth = $this->pdo->prepare($sql);
+        if (!empty($where)) {
+            foreach ($where as $key => $value) {
+                $sth->bindValue(":{$key}", $value);
+            }
+        }
+
         $sth->execute();
         return $sth->fetchAll();
     }
-    public function insert($table,$row_to_insert)
+
+
+    public function insert($table, $row_to_insert)
     {
-        $fields_list = implode(', ',array_keys($row_to_insert));
+        $fields_list = implode(', ', array_keys($row_to_insert));
         $params_array = [];
-        foreach ($row_to_insert as $key => $value){
-            $params_array []= ":{$key}";
+        foreach ($row_to_insert as $key => $value) {
+            $params_array [] = ":{$key}";
         }
         $params_list = implode(', ', $params_array);
         $sql = "INSERT INTO {$table} ({$fields_list}) VALUES ({$params_list})";
@@ -69,6 +85,7 @@ class DB
         $sth->execute();
         return $sth->rowCount();
     }
+
     public function delete($table, $where)
     {
         $where_string = $this->where($where);
@@ -79,6 +96,7 @@ class DB
         $sth->execute();
         return $sth->rowCount();
     }
+
     public function update($table, $row_to_update, $where)
     {
         $where_string = $this->where($where);

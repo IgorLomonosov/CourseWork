@@ -9,6 +9,7 @@ if(empty($Title))
     $Title = '';
 if(empty($Content))
     $Content = '';
+
 ?>
 <!doctype html>
 <html lang="en">
@@ -18,6 +19,7 @@ if(empty($Content))
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title><?= $Title ?></title>
+    <link rel="icon" type="image/png" href="/images/vinyl.png">
     <style>
         .container{
             font-family: "Comic Sans MS";
@@ -64,8 +66,9 @@ if(empty($Content))
                     <?php endif?>
                 </ul>
 
-                <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" role="search">
-                    <input type="search" class="form-control" placeholder="Search..." aria-label="Search">
+                <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3 d-flex" role="search" method="post" action="/news/search/">
+                    <input type="search" class="form-control" placeholder="Пошук..." aria-label="Search" id="search-input" name="searchQuery">
+                    <button type="submit" class="btn btn-outline-dark" style="margin-left: 3px" name="action" value="search">Пошук</button>
                 </form>
                 <?php if(Users::IsUserLogged()) :
                     $user = Core::get()->session->get('user');
@@ -79,13 +82,13 @@ if(empty($Content))
                     </a>
                     <ul class="dropdown-menu text-small">
                         <?php if($user['role'] === 'admin' || $user['role'] === 'moder') :?>
-                        <li><a class="dropdown-item" href="#">Додати новину</a></li>
-                        <li><a class="dropdown-item" href="#">Перевірити чергу новин</a></li>
+                        <li><a class="dropdown-item" href="/news/add">Додати новину</a></li>
                         <?php endif;
                         if($user['role'] === 'admin'):?>
-                        <li><a class="dropdown-item" href="#">Переглянути модерацію</a></li>
+                        <li><a class="dropdown-item" href="/news/queue">Перевірити чергу новин</a></li>
+                        <li><a class="dropdown-item" href="/users/moderation">Переглянути модерацію</a></li>
                         <?php endif; ?>
-                        <li><a class="dropdown-item" href="#">Видалити акаунт</a></li>
+                        <li><a class="dropdown-item" href="/users/deleteself">Видалити акаунт</a></li>
                         <li>
                             <hr class="dropdown-divider">
                         </li>
@@ -102,18 +105,14 @@ if(empty($Content))
     </div>
     <footer class="py-3 my-4">
         <ul class="nav justify-content-center border-bottom pb-3 mb-3">
-            <li class="nav-item"><a href="#" class="nav-link px-2 text-body-secondary">Home</a></li>
-            <li class="nav-item"><a href="#" class="nav-link px-2 text-body-secondary">Features</a></li>
-            <li class="nav-item"><a href="#" class="nav-link px-2 text-body-secondary">Pricing</a></li>
-            <li class="nav-item"><a href="#" class="nav-link px-2 text-body-secondary">FAQs</a></li>
-            <li class="nav-item"><a href="#" class="nav-link px-2 text-body-secondary">About</a></li>
         </ul>
-        <p class="text-center text-body-secondary">© 2024 Company, Inc</p>
+        <p class="text-center text-body-secondary">2024 Lomonosov Ihoryunya INC.</p>
     </footer>
 </div>
 </body>
 <script>
     const userInitials = "<?php echo $userInitials; ?>";
+
 
     function getRandomColor() {
         const letters = '0123456789ABCDEF';

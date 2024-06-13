@@ -16,5 +16,5 @@ $this->Title = 'Вхід на сайт'
         <label for="InputPassword1" class="form-label">Пароль</label>
         <input name="password" type="password" class="form-control" id="InputPassword1">
     </div>
-    <button type="submit" class="btn btn-primary">Увійти</button>
+    <button type="submit" class="btn btn-primary" name="action" value="login">Увійти</button>
 </form>

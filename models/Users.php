@@ -66,6 +66,6 @@ class Users extends Model
         $user->firstname = $firstname;
         $user->lastname = $lastname;
         $user->role = null;
-        $user->save();
+        $user->saveInsert();
     }
 }

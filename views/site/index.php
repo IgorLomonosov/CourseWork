@@ -1,39 +1,48 @@
 <?php
-$this->Title = 'Головна сторінка';
-?>
 
-<div>Контент головної сторінки</div>
-<div>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium architecto enim eos, facere fugit illum ipsa
-    ipsam itaque molestias mollitia quas quibusdam repudiandae sed. Autem id laboriosam magni mollitia pariatur.
+use models\News;
+
+$this->Title = 'Головна сторінка';
+
+if(empty($newsArr))
+    $newsArr = [];
+$value=0;
+?>
+<div class="container py-5">
+    <div class="row">
+        <div class="col-md-6 offset-md-3">
+            <h2 class="text-center mb-4">Музичний портал новин</h2>
+            <p class="lead text-muted">Ось місце, де музика зустрічається з новинами!</p>
+            <p>Наш портал новин присвячений всьому, що пов'язано з музикою: нові релізи, концерти, фестивалі, інтерв'ю з артистами та багато іншого. Ми стежимо за останніми подіями в музичному світі та надаємо вам найсвіжішу інформацію.</p>
+            <p>З нами ви будете в курсі всіх музичних новин, від класики до сучасної електроніки. Ми також пропонуємо вам оглядати наші статті, рецензії та інтерв'ю, щоб дізнатися більше про ваших улюблених артистів.</p>
+        </div>
+    </div>
 </div>
-<div>Dignissimos enim et excepturi molestias perferendis porro ullam unde voluptas voluptatem. A atque cupiditate
-    dignissimos ea enim impedit maxime odio perspiciatis sint temporibus unde, vero. Aut inventore perferendis quia sit!
-</div>
-<div>Architecto asperiores dignissimos necessitatibus nemo nobis non totam! Accusamus beatae culpa dolores id itaque
-    libero, maiores molestias natus necessitatibus nemo numquam perferendis perspiciatis ratione rem rerum similique
-    unde ut, vitae.
-</div>
-<div>Aperiam, aut delectus dolor eius eos et eum laudantium molestiae natus odit omnis possimus qui rem repudiandae
-    suscipit velit voluptatibus? Accusamus ad architecto cumque doloremque esse necessitatibus qui unde voluptas!
-</div>
-<div>Alias, blanditiis corporis deleniti esse eum harum iste maiores porro quisquam reiciendis rem voluptatum? Ab enim
-    eos explicabo magni non, perspiciatis quaerat temporibus voluptate. Autem laboriosam magnam mollitia pariatur.
-    Pariatur?
-</div>
-<div>Adipisci, aliquam, consectetur cumque dignissimos dolore dolorum expedita fugiat harum officia quis sed sunt unde
-    vel. Aliquam aspernatur corporis eaque eos esse quaerat similique ullam. Accusantium aspernatur labore laboriosam
-    voluptas?
-</div>
-<div>Debitis doloribus earum fugit magni non perspiciatis porro quia quisquam voluptate. Ad architecto at beatae dicta
-    in iusto libero, molestiae odio, placeat quae quasi rerum, sapiente sed sint sunt vel.
-</div>
-<div>Asperiores iusto saepe similique voluptatem! Aspernatur consequatur culpa doloremque eius illo itaque molestiae,
-    recusandae soluta tenetur velit. Cumque dolorum esse ex excepturi laborum modi optio possimus unde. Nemo, porro
-    suscipit.
-</div>
-<div>Ad dolorum error itaque laboriosam, magni nihil quaerat quasi saepe tempore vero? Amet, assumenda deserunt dolore
-    explicabo hic illo ipsam iure laborum molestias necessitatibus omnis quas, quis totam vel veritatis!
-</div>
-<div>Esse facere hic molestiae nesciunt sit unde vero. Aperiam consectetur modi neque nihil nobis omnis quam repellat
-    velit vitae voluptas. Atque corporis cum doloribus molestias necessitatibus nisi sapiente velit voluptas!
-</div>
+<h3>Останні новини</h3>
+<?php foreach ($newsArr as $news) {
+    $value++;
+    if($value == 1 ):
+        ?>
+        <div class="card-group">
+    <?php endif; ?>
+    <div class="card">
+        <a href="/news/view/<?= $news['id']?>" style="text-decoration: none; color: inherit;">
+
+            <img src="data:image/png;base64,<?= \models\Images::getImage($news['id'])?>" class="card-img-top" alt="<?= $news['short_text']?>">
+            <div class="card-body">
+                <h5 class="card-title"><?= $news['title']?></h5>
+                <p class="card-text"><?= $news['short_text']?></p>
+                <a href=""></a>
+            </div>
+        </a>
+        <div class="card-footer">
+            <small class="text-body-secondary"><?= News::getDate($news)?></small>
+        </div>
+    </div>
+    <?php if($value == 3) :?>
+        </div>
+        <br>
+        <?php $value=0;
+        break;
+    endif;
+} ?>

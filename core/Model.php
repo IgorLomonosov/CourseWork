@@ -42,32 +42,35 @@ class Model
             return null;
     }
 
-    public static function findByCondition($conditionAssocArray)
+    public static function createObjById($id)
     {
-        $arr = Core::get()->db->select(static::$tableName, '*', $conditionAssocArray);
+        $array = static::findById($id);
+        $obj = new static();
+        foreach ($array as $key => $value) {
+            $obj->$key = $value;
+        }
+        return $obj;
+    }
+
+    public static function findByCondition($conditionAssocArray, $order = null)
+    {
+        $arr = Core::get()->db->select(static::$tableName, '*', $conditionAssocArray, $order);
         if (count($arr) > 0)
             return $arr;
         else
             return null;
     }
 
-    public function save()
+    public function saveInsert()
     {
-        $isInsert= false;
-        if(!isset($this->{static::$primaryKey}))
-            $isInsert= true;
-        else{
-            $value= $this->{static::$primaryKey};
-            if(empty($value))
-                $isInsert= true;
-        }
-        if ($isInsert) {
-            Core::get()->db->insert(static::$tableName, $this->fieldsArray);
-        } else {
-            Core::get()->db->update(static::$tableName, $this->fieldsArray,
-                [
-                    static::$primaryKey => $this->{static::$primaryKey}
-                ]);
-        }
+        Core::get()->db->insert(static::$tableName, $this->fieldsArray);
+    }
+
+    public function saveUpdate()
+    {
+        Core::get()->db->update(static::$tableName, $this->fieldsArray,
+            [
+                static::$primaryKey => $this->{static::$primaryKey}
+            ]);
     }
 }
